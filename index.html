@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>プレミアム抽選</title>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+
+<body>
+  <main id="app" class="app" aria-live="polite">
+    <!-- SCREENSAVER (CM) -->
+    <section id="screenSaver" class="screen is-active" data-screen="screensaver" aria-label="スクリーンセーバー">
+      <!-- 左上 3回タップ：不可視ホットスポット -->
+      <button id="secretHotspot" class="secretHotspot" type="button" aria-label="スタッフ専用起動"></button>
+
+      <video id="cmVideo" class="cmVideo" src="./assets/video/cm.mp4" playsinline preload="auto" loop></video>
+
+    </section>
+
+    <!-- 背景動画 (Game/Result共通) -->
+    <video id="bgVideo" class="bgVideo" src="./assets/video/back.mp4" muted playsinline loop></video>
+
+    <!-- GAME (Challenge) -->
+    <section id="game" class="screen" data-screen="game" aria-label="ゲームモード">
+      <div class="centerStage">
+        <div class="gamePrompt">カードを選んでね♪</div>
+        <!-- 5Cards Container (Top 3, Bottom 2) -->
+        <div id="cardContainer" class="cardContainer">
+          <button class="cardBtn" type="button" aria-label="カード1">
+            <div class="cardBtn__inner">
+              <div class="cardBtn__face cardBtn__face--back"></div>
+              <div class="cardBtn__face cardBtn__face--front">?</div>
+            </div>
+          </button>
+          <button class="cardBtn" type="button" aria-label="カード2">
+            <div class="cardBtn__inner">
+              <div class="cardBtn__face cardBtn__face--back"></div>
+              <div class="cardBtn__face cardBtn__face--front">?</div>
+            </div>
+          </button>
+          <button class="cardBtn" type="button" aria-label="カード3">
+            <div class="cardBtn__inner">
+              <div class="cardBtn__face cardBtn__face--back"></div>
+              <div class="cardBtn__face cardBtn__face--front">?</div>
+            </div>
+          </button>
+          <button class="cardBtn" type="button" aria-label="カード4">
+            <div class="cardBtn__inner">
+              <div class="cardBtn__face cardBtn__face--back"></div>
+              <div class="cardBtn__face cardBtn__face--front">?</div>
+            </div>
+          </button>
+          <button class="cardBtn" type="button" aria-label="カード5">
+            <div class="cardBtn__inner">
+              <div class="cardBtn__face cardBtn__face--back"></div>
+              <div class="cardBtn__face cardBtn__face--front">?</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RESULT -->
+    <section id="result" class="screen" data-screen="result" aria-label="結果表示">
+      <div class="resultWrap">
+        <!-- Headline Top -->
+        <h2 id="resultMsg" class="resultHeadline">結果</h2>
+
+        <!-- Card Area (Big) -->
+        <div id="resultCardArea" class="resultCardArea"></div>
+
+        <div class="resultRankBox">
+          <div id="resultRank" class="resultRank">1等</div>
+          <div id="resultSub" class="resultSub">景品をお選びください</div>
+        </div>
+
+        <div id="resultDate" class="resultDate">2026/01/01</div>
+
+        <div class="resultActions">
+          <button id="btnBackToGame" type="button" class="btnBackToGame">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            <span class="btnText">戻る</span>
+          </button>
+          <button id="btnExit" type="button" class="btnExit">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            <span class="btnText">閉じる</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="./assets/js/app.js"></script>
+</body>
+
+</html>
