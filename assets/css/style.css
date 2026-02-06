@@ -1,0 +1,482 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@800&display=swap');
+
+:root {
+  /* こども向け：明るいポップな背景 */
+  --bg1: #6a8dff;
+  --bg2: #ff77c7;
+  --bg3: #7bffda;
+
+  --panel: rgba(255, 255, 255, .88);
+  --panel2: rgba(255, 255, 255, .72);
+
+  --text: #10203a;
+  --muted: rgba(16, 32, 58, .72);
+  --line: rgba(16, 32, 58, .12);
+
+  --safe: 6vmin;
+  --radius: 28px;
+
+  --btn-h: 124px;
+  --btn-radius: 999px;
+
+  --shadow: 0 18px 60px rgba(0, 0, 0, .28);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  /* タップ時の青いハイライトを消す */
+  outline: none;
+  /* フォーカス枠も消す */
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  /* フォント変更: 太字の似合う可愛いフォント */
+  font-family: 'M PLUS Rounded 1c', system-ui, sans-serif;
+  overflow: hidden;
+  touch-action: manipulation;
+  user-select: none;
+
+  /* 背景動画を見せるため、bodyの背景は透明または黒に */
+  background: #000;
+}
+
+.app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* 背景動画 */
+.bgVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.8;
+  /* 動画が強すぎる場合は調整 */
+}
+
+/* screen switch */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+/* ---------- Screensaver ---------- */
+.cmVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+.secretHotspot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  opacity: 0;
+  z-index: 5;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+/* CM上にほんのりベール */
+#screenSaver::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, .16), transparent 52%);
+  pointer-events: none;
+}
+
+
+
+/* ---------- Game ---------- */
+
+
+.centerStage {
+  position: absolute;
+  inset: 0;
+  padding: var(--safe);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  /* カードとの隙間調整 */
+}
+
+.gamePrompt {
+  font-size: 60px;
+  font-weight: 1000;
+  color: #fff;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+  animation: prompt-blink 2s infinite ease-in-out;
+  transition: opacity 0.5s ease;
+}
+
+.gamePrompt.is-hidden {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes prompt-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* カードコンテナ: 上3枚、下2枚の配置にする */
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  /* 折り返し有効 */
+  justify-content: center;
+  gap: 30px;
+  /* カード間隔 */
+  width: min(900px, 94vw);
+  /* コンテナ幅を制限して折り返させる */
+}
+
+/* カード本体（ボタン） */
+.cardBtn {
+  /* 大きくする: 幅30%弱にして3枚並ぶように */
+  --card-w: min(28vw, 220px);
+  --card-h: min(42vw, 330px);
+
+  width: var(--card-w);
+  height: var(--card-h);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  perspective: 1000px;
+  cursor: pointer;
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 登場アニメーション */
+@keyframes card-enter {
+  0% {
+    transform: translateY(50px) scale(0.5);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.cardBtn.is-entering {
+  animation: card-enter 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
+
+/* 順番に登場させる */
+.cardBtn.is-entering:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.cardBtn.is-entering:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.cardBtn.is-entering:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.cardBtn.is-entering:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.cardBtn.is-entering:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* 内部の回転コンテナ */
+.cardBtn__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  border-radius: 20px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* 選ばれたカード */
+.cardBtn.is-selected {
+  z-index: 100;
+}
+
+.cardBtn.is-selected .cardBtn__inner {
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+}
+
+/* 選ばれなかったカード */
+.cardBtn.is-faded {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+}
+
+/* カードの表裏共通 */
+.cardBtn__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 12px solid #fff;
+  /* 枠の太さ: 6px -> 12px */
+}
+
+/* 裏面（模様） */
+.cardBtn__face--back {
+  background: repeating-linear-gradient(45deg,
+      #ff7eb3 0,
+      #ff7eb3 18px,
+      #ffd1e3 18px,
+      #ffd1e3 36px);
+}
+
+.cardBtn__face--back::after {
+  content: "?";
+  font-size: 200px;
+  /* 大きく */
+  color: #fff;
+  font-weight: 1000;
+  text-shadow: 0 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* 表面（結果） */
+.cardBtn__face--front {
+  background: #fff;
+  color: #10203a;
+  transform: rotateY(180deg);
+  font-size: 32px;
+  font-weight: bold;
+  overflow: hidden;
+  /* エフェクトはみ出し防止 */
+}
+
+/* キラキラエフェクト (表になった瞬間) */
+.cardBtn.is-flipped .cardBtn__face--front::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background:
+    conic-gradient(from 0deg at 50% 50%, transparent 0%, rgba(255, 255, 200, 0.8) 10%, transparent 20%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8), transparent 70%);
+  opacity: 0;
+  animation: sparkle-burst 0.8s ease-out forwards;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+@keyframes sparkle-burst {
+  0% {
+    transform: scale(0.5) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.5) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* 結果発表時のクラス */
+.cardBtn.is-flipped .cardBtn__inner {
+  transform: rotateY(180deg) scale(1.1);
+  /* 少し拡大 */
+}
+
+/* ドキドキ演出 */
+@keyframes shake-eager {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-5deg);
+  }
+
+  50% {
+    transform: rotate(5deg);
+  }
+
+  75% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.cardBtn.is-shaking .cardBtn__inner {
+  animation: shake-eager 0.5s infinite;
+}
+
+
+
+/* ---------- Result ---------- */
+.resultWrap {
+  position: absolute;
+  inset: 0;
+  padding: var(--safe);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  /* 上下に分散 */
+  text-align: center;
+}
+
+/* タイトルを最上部に */
+.resultHeadline {
+  font-size: 120px;
+  /* サイズ調整: 大きく */
+  margin-top: 10px;
+  font-weight: 1000;
+  letter-spacing: .10em;
+  color: #fff;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, .6);
+}
+
+/* カードエリアを特大に: 4倍程度 */
+/* 以前の倍: width 500px程度, height 700px程度 */
+.resultCardArea {
+  width: min(50vh, 500px);
+  aspect-ratio: 2 / 3;
+  position: relative;
+  /* 画面中央付近を占有 */
+  margin: 10px 0;
+}
+
+/* Result内でのカードスタイル上書き */
+.cardBtn.is-result-mode {
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+  cursor: default;
+  pointer-events: none;
+}
+
+.cardBtn.is-result-mode .cardBtn__inner {
+  transform: rotateY(180deg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.resultRankBox {
+  /* ランクと賞品名をまとめる */
+  margin-top: -20px;
+}
+
+.resultRank {
+  font-size: 200px;
+  /* カードが大きいので少し控えめに */
+  font-weight: 1100;
+  letter-spacing: .06em;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 6px 0 rgba(16, 32, 58, .16), 0 16px 60px rgba(0, 0, 0, .22);
+}
+
+.resultSub {
+  font-size: 80px;
+  font-weight: 1000;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .22);
+}
+
+.resultDate {
+  font-size: 40px;
+  color: rgba(255, 255, 255, .7);
+  margin-bottom: 5px;
+}
+
+/* ボタン類（アイコン化・左右配置） */
+.resultActions {
+  display: flex;
+  flex-direction: row;
+  /* 横配置 */
+  justify-content: space-between;
+  /* 左右端 */
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+/* ボタン共通: 背景なしアイコン */
+.btnBackToGame,
+.btnExit {
+  background: transparent;
+  color: #fff;
+  border: 0;
+  box-shadow: none;
+  padding: 10px;
+  cursor: pointer;
+
+  /* Icon Layout */
+  display: flex;
+  flex-direction: column;
+  /* 縦並び: アイコン上、テキスト下 */
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btnBackToGame:active,
+.btnExit:active {
+  transform: scale(0.9);
+  opacity: 0.8;
+  box-shadow: none;
+}
+
+.btnBackToGame svg,
+.btnExit svg {
+  width: 80px;
+  height: 80px;
+  stroke-width: 2.5;
+  /* 少し太くして視認性確保 */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  /* 白アイコンなので影で浮かす */
+}
+
+.btnText {
+  font-size: 20px;
+  /* 小さく */
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
