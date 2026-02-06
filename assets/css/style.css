@@ -1,0 +1,316 @@
+:root{
+  /* こども向け：明るいポップな背景 */
+  --bg1:#6a8dff;
+  --bg2:#ff77c7;
+  --bg3:#7bffda;
+
+  --panel: rgba(255,255,255,.88);
+  --panel2: rgba(255,255,255,.72);
+
+  --text:#10203a;
+  --muted: rgba(16,32,58,.72);
+  --line: rgba(16,32,58,.12);
+
+  --safe: 6vmin;
+  --radius: 28px;
+
+  --btn-h: 124px;
+  --btn-radius: 999px;
+
+  --shadow: 0 18px 60px rgba(0,0,0,.28);
+}
+
+*{ box-sizing:border-box; }
+html, body { height:100%; }
+body{
+  margin:0;
+  color:var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", sans-serif;
+  overflow:hidden;
+  touch-action: manipulation;
+  user-select:none;
+
+  /* ポップなグラデ背景＋キラ感 */
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,.55), transparent 28%),
+    radial-gradient(circle at 82% 22%, rgba(255,255,255,.45), transparent 26%),
+    radial-gradient(circle at 30% 78%, rgba(255,255,255,.40), transparent 30%),
+    linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+}
+
+.app{ position:relative; width:100vw; height:100vh; }
+
+/* screen switch */
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+}
+.screen.is-active{ display:block; }
+
+/* ---------- Screensaver ---------- */
+.cmVideo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#000;
+}
+
+.secretHotspot{
+  position:absolute;
+  top:0;
+  left:0;
+  width:80px;
+  height:80px;
+  opacity:0;
+  z-index:5;
+  border:0;
+  padding:0;
+  background:transparent;
+}
+
+/* CM上にほんのりベール（動画が暗くても可愛くなる） */
+#screenSaver::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(circle at 50% 20%, rgba(255,255,255,.16), transparent 52%);
+  pointer-events:none;
+}
+
+.fallbackNote{
+  position:absolute;
+  left: var(--safe);
+  bottom: var(--safe);
+  color: rgba(255,255,255,.92);
+  font-size: 30px;
+  z-index:2;
+  text-shadow: 0 2px 18px rgba(0,0,0,.45);
+  pointer-events:none;
+}
+
+/* ---------- Game ---------- */
+.topBar{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  padding: calc(var(--safe) * .7) var(--safe);
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.topBar__badge{
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 1000;
+  letter-spacing:.08em;
+  font-size: 26px;
+  color:#fff;
+  background: rgba(16,32,58,.35);
+  backdrop-filter: blur(6px);
+}
+
+.topBar__title{
+  font-size: 36px;
+  font-weight: 1000;
+  letter-spacing:.04em;
+  color:#fff;
+  text-shadow: 0 2px 18px rgba(0,0,0,.25);
+}
+
+.centerStage{
+  position:absolute;
+  inset:0;
+  padding: var(--safe);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap: 54px;
+}
+
+.stageCard{
+  width:min(820px, 82vw);
+  padding: 52px 44px;
+  border-radius: calc(var(--radius) + 8px);
+  background: var(--panel);
+  border: 1px solid rgba(16,32,58,.10);
+  box-shadow: var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+
+.stageCard::before{
+  /* キラッと帯 */
+  content:"";
+  position:absolute;
+  top:-40%;
+  left:-60%;
+  width: 120%;
+  height: 120%;
+  background: linear-gradient(75deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%);
+  transform: rotate(12deg);
+  animation: shine 3.5s linear infinite;
+  opacity:.55;
+}
+
+@keyframes shine{
+  0%{ transform: translateX(-25%) rotate(12deg); }
+  100%{ transform: translateX(45%) rotate(12deg); }
+}
+
+.stageCard__text{
+  position:relative;
+  font-size: 38px;
+  font-weight: 1000;
+  letter-spacing:.04em;
+  text-align:center;
+}
+
+.btnChallenge{
+  width:min(860px, 86vw);
+  height: var(--btn-h);
+  border-radius: var(--btn-radius);
+  border: 0;
+  font-size: 46px;
+  font-weight: 1000;
+  letter-spacing:.06em;
+  color:#10203a;
+
+  /* ポップボタン */
+  background: linear-gradient(180deg, #ffffff, #fff2a8);
+  box-shadow: 0 20px 0 rgba(16,32,58,.12), 0 30px 70px rgba(0,0,0,.22);
+}
+
+.btnChallenge:active{
+  transform: translateY(6px);
+  box-shadow: 0 14px 0 rgba(16,32,58,.12), 0 20px 60px rgba(0,0,0,.20);
+  filter: brightness(.98);
+}
+
+.footNote{
+  position:absolute;
+  left: var(--safe);
+  right: var(--safe);
+  bottom: calc(var(--safe) * .7);
+  text-align:center;
+  font-size: 26px;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 2px 14px rgba(0,0,0,.25);
+}
+
+/* ---------- Lottery ---------- */
+.lotteryWrap{
+  position:absolute;
+  inset:0;
+  padding: var(--safe);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap: 26px;
+}
+
+.lotteryLabel{
+  font-size: 38px;
+  font-weight: 1000;
+  letter-spacing:.06em;
+  color:#fff;
+  text-shadow: 0 2px 18px rgba(0,0,0,.25);
+}
+
+.lotteryVideo{
+  width: 800px;
+  height: 800px;
+  border-radius: 32px;
+  background:#000;
+  box-shadow: 0 26px 90px rgba(0,0,0,.28);
+  border: 6px solid rgba(255,255,255,.6);
+}
+
+@media (max-width: 900px){
+  .lotteryVideo{ width: 70vw; height: 70vw; }
+}
+
+/* ---------- Result ---------- */
+.resultWrap{
+  position:absolute;
+  inset:0;
+  padding: var(--safe);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap: 18px;
+  text-align:center;
+}
+
+.resultHeadline{
+  font-size: 32px;
+  font-weight: 1000;
+  letter-spacing:.10em;
+  color:#fff;
+  text-shadow: 0 2px 18px rgba(0,0,0,.22);
+}
+
+.resultRank{
+  font-size: 150px;
+  font-weight: 1100;
+  letter-spacing:.06em;
+  line-height: 1.05;
+  color:#fff;
+  text-shadow: 0 6px 0 rgba(16,32,58,.16), 0 16px 60px rgba(0,0,0,.22);
+}
+
+.resultSub{
+  font-size: 36px;
+  font-weight: 1000;
+  color:#fff;
+  text-shadow: 0 2px 18px rgba(0,0,0,.22);
+}
+
+.resultMeta{
+  margin-top: 10px;
+  padding: 18px 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.45);
+  background: rgba(255,255,255,.20);
+  backdrop-filter: blur(10px);
+  width: min(820px, 92vw);
+}
+.resultMeta__row{
+  font-size: 26px;
+  color: rgba(255,255,255,.92);
+  letter-spacing:.02em;
+  text-shadow: 0 1px 12px rgba(0,0,0,.18);
+}
+
+/* ★追加：戻るボタン */
+.btnBackToGame{
+  margin-top: 18px;
+  width: min(860px, 86vw);
+  height: 110px;
+  border-radius: 999px;
+  border: 0;
+  font-size: 40px;
+  font-weight: 1100;
+  letter-spacing:.06em;
+  color:#10203a;
+  background: linear-gradient(180deg, #ffffff, #c8fff2);
+  box-shadow: 0 18px 0 rgba(16,32,58,.12), 0 30px 70px rgba(0,0,0,.20);
+}
+.btnBackToGame:active{
+  transform: translateY(6px);
+  box-shadow: 0 12px 0 rgba(16,32,58,.12), 0 20px 60px rgba(0,0,0,.18);
+}
+
+.resultHint{
+  margin-top: 10px;
+  font-size: 24px;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 2px 14px rgba(0,0,0,.20);
+}
