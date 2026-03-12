@@ -7,10 +7,9 @@
     resultToSaverMs: 300_000, // 結果画面: 5分(300秒)無操作でスクリーンセーバーへ
     weights: [
       { rank: '特賞', weight: 1, img: './assets/img/card_sp.png' },
-      { rank: 'パンダ賞', weight: 10, img: './assets/img/card_01.png' },
-      { rank: 'ウサギ賞', weight: 10, img: './assets/img/card_02.png' },
-      { rank: 'コアラ賞', weight: 10, img: './assets/img/card_03.png' },
-      { rank: 'イルカ賞', weight: 10, img: './assets/img/card_04.png' },
+      { rank: 'パンダ賞', weight: 20, img: './assets/img/card_01.png' },
+      { rank: 'ウサギ賞', weight: 20, img: './assets/img/card_02.png' },
+      { rank: 'コアラ賞', weight: 20, img: './assets/img/card_03.png' },
     ],
   };
 
@@ -355,3 +354,4 @@
     // goSaver() は startApp 内で呼び出すように変更
   });
 })();
+
